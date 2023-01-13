@@ -25,6 +25,31 @@ class AdListView(ListView):
 
         self.object_list = self.object_list.select_related("author").select_related("category").order_by("-price")
 
+        ad_cat = request.GET.get('cat', None)
+        if ad_cat:
+            self.object_list = self.object_list.filter(
+                category__id=ad_cat,
+            )
+
+        ad_text = request.GET.get('text', None)
+        if ad_text:
+            self.object_list = self.object_list.filter(
+                text__icontains=ad_text,
+            )
+
+        ad_location = request.GET.get('location', None)
+        if ad_location:
+            self.object_list = self.object_list.filter(
+                author__locations__contains=ad_location,
+            )
+
+        ad_price_from = request.GET.get('price_from', None)
+        ad_price_to = request.GET.get('price_to', None)
+        if ad_price_from and ad_price_to:
+            self.object_list = self.object_list.filter(
+                price__range=[ad_price_from, ad_price_to],
+            )
+
         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
