@@ -29,3 +29,13 @@ class Ad(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def username(self):
+        return self.author.username if self.author else None
+
+
+class Selection(models.Model):
+    name = models.CharField(max_length=50)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Ad)

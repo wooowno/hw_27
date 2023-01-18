@@ -1,6 +1,11 @@
 from django.urls import path
+from rest_framework import routers
 
 from ads import views
+from ads.views import CategoryViewSet
+
+router = routers.SimpleRouter()
+router.register('category', CategoryViewSet)
 
 urlpatterns = [
     path('', views.AdListView.as_view()),
@@ -9,9 +14,6 @@ urlpatterns = [
     path('<int:pk>/update/', views.AdUpdateView.as_view()),
     path('<int:pk>/delete/', views.AdDeleteView.as_view()),
     path('<int:pk>/upload_image/', views.AdImageView.as_view()),
-    path('category/', views.CategoryListView.as_view()),
-    path('category/create/', views.CategoryCreateView.as_view()),
-    path('category/<int:pk>/', views.CategoryDetailView.as_view()),
-    path('category/<int:pk>/update/', views.CategoryUpdateView.as_view()),
-    path('category/<int:pk>/delete/', views.CategoryDeleteView.as_view()),
 ]
+
+urlpatterns += router.urls
