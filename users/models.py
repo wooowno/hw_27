@@ -1,5 +1,20 @@
+from datetime import date
+
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
+
+
+def date_birth_check(value):
+    user_age = relativedelta(value, date.today()).years
+    if user_age < 9:
+        raise ValidationError("Access forbidden.")
+
+
+def email_check(value):
+    if "rambler.ru" in value:
+        raise ValidationError(f"Email's domain is rambler.")
 
 
 class Location(models.Model):
@@ -28,6 +43,8 @@ class User(AbstractUser):
     role = models.CharField(max_length=9, choices=ROLE)
     age = models.SmallIntegerField()
     locations = models.ManyToManyField(Location)
+    date_birth = models.DateField(validators=[date_birth_check])
+    email = models.EmailField(unique=True, validators=[email_check])
 
     class Meta:
         verbose_name = "Пользователь"

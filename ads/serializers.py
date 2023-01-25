@@ -16,7 +16,7 @@ class AdListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ad
-        fields = ['id', 'name', 'username', 'price', 'description', 'is_published', 'image', 'category']
+        fields = ['id', 'name', 'slug', 'username', 'price', 'description', 'is_published', 'image', 'category']
 
 
 class AdDetailSerializer(serializers.ModelSerializer):
@@ -30,6 +30,7 @@ class AdDetailSerializer(serializers.ModelSerializer):
 class AdCreateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     image = serializers.ImageField(use_url=True)
+    is_published = serializers.BooleanField(required=False)
 
     class Meta:
         model = User
