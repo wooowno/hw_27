@@ -29,11 +29,6 @@ class AdDetailSerializer(serializers.ModelSerializer):
 
 class AdCreateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
-    category = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='name',
-        queryset=Category.objects.all(),
-    )
     image = serializers.ImageField(use_url=True)
 
     class Meta:
@@ -54,12 +49,7 @@ class AdCreateSerializer(serializers.ModelSerializer):
 
 
 class AdUpdateSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-    category = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='name',
-        queryset=Category.objects.all(),
-    )
+    author = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     image = serializers.ImageField(use_url=True)
 
     class Meta:
@@ -98,7 +88,7 @@ class SelectionDetailSerializer(serializers.ModelSerializer):
 
 
 class SelectionCreateSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(read_only=True)
+    owner = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     items = serializers.SlugRelatedField(
         required=False,
         many=True,
@@ -113,7 +103,7 @@ class SelectionCreateSerializer(serializers.ModelSerializer):
 
 class SelectionUpdateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
-    owner = serializers.PrimaryKeyRelatedField(required=False)
+    owner = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     items = serializers.SlugRelatedField(
         required=False,
         many=True,

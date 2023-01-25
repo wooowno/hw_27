@@ -10,6 +10,10 @@ urlpatterns = [
     path('', views.index),
     path('ad/', include('ads.urls')),
     path('user/', include('users.urls')),
+    path('selection/', views.SelectionListView.as_view()),
+    path('selection/<int:pk>/', views.SelectionDetailView.as_view()),
+    path('selection/create/', views.SelectionCreateView.as_view()),
+    path('selection/<int:pk>/delete/', views.SelectionDestroyView.as_view()),
 ]
 
 if settings.DEBUG:
